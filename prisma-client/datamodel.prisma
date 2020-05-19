@@ -3,4 +3,11 @@ type User {
   email: String! @unique
   name: String!
   password: String!
+  gameSessions: [GameSession!]!
+}
+
+type GameSession {
+  id: ID! @id
+  title: String!
+  active: Boolean!
 }

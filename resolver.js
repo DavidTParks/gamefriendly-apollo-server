@@ -18,6 +18,9 @@ const resolvers = {
         const decoded = decodedToken(req);
         return prisma.users();
     },
+    gameSessions: async (root, args, { prisma, req }, info) => { 
+        return prisma.gameSessions();
+    },
   },
   Mutation: {
     signupUser: async (root, args, { prisma }, info) => {
@@ -28,7 +31,7 @@ const resolvers = {
         if (!passwordSchema.validate(password)) {
           throw new Error('Password is not strong enough!');
         }
-        
+
         const newUser = await prisma.createUser({
           email,
           name,

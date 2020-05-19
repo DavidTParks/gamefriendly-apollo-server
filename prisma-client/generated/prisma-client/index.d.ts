@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  gameSession: (where?: GameSessionWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -38,6 +39,27 @@ export interface Prisma {
    * Queries
    */
 
+  gameSession: (
+    where: GameSessionWhereUniqueInput
+  ) => GameSessionNullablePromise;
+  gameSessions: (args?: {
+    where?: GameSessionWhereInput;
+    orderBy?: GameSessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<GameSession>;
+  gameSessionsConnection: (args?: {
+    where?: GameSessionWhereInput;
+    orderBy?: GameSessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => GameSessionConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -63,6 +85,24 @@ export interface Prisma {
    * Mutations
    */
 
+  createGameSession: (data: GameSessionCreateInput) => GameSessionPromise;
+  updateGameSession: (args: {
+    data: GameSessionUpdateInput;
+    where: GameSessionWhereUniqueInput;
+  }) => GameSessionPromise;
+  updateManyGameSessions: (args: {
+    data: GameSessionUpdateManyMutationInput;
+    where?: GameSessionWhereInput;
+  }) => BatchPayloadPromise;
+  upsertGameSession: (args: {
+    where: GameSessionWhereUniqueInput;
+    create: GameSessionCreateInput;
+    update: GameSessionUpdateInput;
+  }) => GameSessionPromise;
+  deleteGameSession: (where: GameSessionWhereUniqueInput) => GameSessionPromise;
+  deleteManyGameSessions: (
+    where?: GameSessionWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -88,6 +128,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  gameSession: (
+    where?: GameSessionSubscriptionWhereInput
+  ) => GameSessionSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -101,6 +144,14 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type GameSessionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "active_ASC"
+  | "active_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -112,6 +163,46 @@ export type UserOrderByInput =
   | "password_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type GameSessionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface GameSessionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  active?: Maybe<Boolean>;
+  active_not?: Maybe<Boolean>;
+  AND?: Maybe<GameSessionWhereInput[] | GameSessionWhereInput>;
+  OR?: Maybe<GameSessionWhereInput[] | GameSessionWhereInput>;
+  NOT?: Maybe<GameSessionWhereInput[] | GameSessionWhereInput>;
+}
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -175,9 +266,28 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  gameSessions_every?: Maybe<GameSessionWhereInput>;
+  gameSessions_some?: Maybe<GameSessionWhereInput>;
+  gameSessions_none?: Maybe<GameSessionWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface GameSessionCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  active: Boolean;
+}
+
+export interface GameSessionUpdateInput {
+  title?: Maybe<String>;
+  active?: Maybe<Boolean>;
+}
+
+export interface GameSessionUpdateManyMutationInput {
+  title?: Maybe<String>;
+  active?: Maybe<Boolean>;
 }
 
 export interface UserCreateInput {
@@ -185,18 +295,129 @@ export interface UserCreateInput {
   email: String;
   name: String;
   password: String;
+  gameSessions?: Maybe<GameSessionCreateManyInput>;
+}
+
+export interface GameSessionCreateManyInput {
+  create?: Maybe<GameSessionCreateInput[] | GameSessionCreateInput>;
+  connect?: Maybe<GameSessionWhereUniqueInput[] | GameSessionWhereUniqueInput>;
 }
 
 export interface UserUpdateInput {
   email?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
+  gameSessions?: Maybe<GameSessionUpdateManyInput>;
+}
+
+export interface GameSessionUpdateManyInput {
+  create?: Maybe<GameSessionCreateInput[] | GameSessionCreateInput>;
+  update?: Maybe<
+    | GameSessionUpdateWithWhereUniqueNestedInput[]
+    | GameSessionUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | GameSessionUpsertWithWhereUniqueNestedInput[]
+    | GameSessionUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<GameSessionWhereUniqueInput[] | GameSessionWhereUniqueInput>;
+  connect?: Maybe<GameSessionWhereUniqueInput[] | GameSessionWhereUniqueInput>;
+  set?: Maybe<GameSessionWhereUniqueInput[] | GameSessionWhereUniqueInput>;
+  disconnect?: Maybe<
+    GameSessionWhereUniqueInput[] | GameSessionWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    GameSessionScalarWhereInput[] | GameSessionScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | GameSessionUpdateManyWithWhereNestedInput[]
+    | GameSessionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GameSessionUpdateWithWhereUniqueNestedInput {
+  where: GameSessionWhereUniqueInput;
+  data: GameSessionUpdateDataInput;
+}
+
+export interface GameSessionUpdateDataInput {
+  title?: Maybe<String>;
+  active?: Maybe<Boolean>;
+}
+
+export interface GameSessionUpsertWithWhereUniqueNestedInput {
+  where: GameSessionWhereUniqueInput;
+  update: GameSessionUpdateDataInput;
+  create: GameSessionCreateInput;
+}
+
+export interface GameSessionScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  active?: Maybe<Boolean>;
+  active_not?: Maybe<Boolean>;
+  AND?: Maybe<GameSessionScalarWhereInput[] | GameSessionScalarWhereInput>;
+  OR?: Maybe<GameSessionScalarWhereInput[] | GameSessionScalarWhereInput>;
+  NOT?: Maybe<GameSessionScalarWhereInput[] | GameSessionScalarWhereInput>;
+}
+
+export interface GameSessionUpdateManyWithWhereNestedInput {
+  where: GameSessionScalarWhereInput;
+  data: GameSessionUpdateManyDataInput;
+}
+
+export interface GameSessionUpdateManyDataInput {
+  title?: Maybe<String>;
+  active?: Maybe<Boolean>;
 }
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
+}
+
+export interface GameSessionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GameSessionWhereInput>;
+  AND?: Maybe<
+    GameSessionSubscriptionWhereInput[] | GameSessionSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    GameSessionSubscriptionWhereInput[] | GameSessionSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    GameSessionSubscriptionWhereInput[] | GameSessionSubscriptionWhereInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -214,57 +435,53 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface User {
+export interface GameSession {
   id: ID_Output;
-  email: String;
-  name: String;
-  password: String;
+  title: String;
+  active: Boolean;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface GameSessionPromise extends Promise<GameSession>, Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  password: () => Promise<String>;
+  title: () => Promise<String>;
+  active: () => Promise<Boolean>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface GameSessionSubscription
+  extends Promise<AsyncIterator<GameSession>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface GameSessionNullablePromise
+  extends Promise<GameSession | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  password: () => Promise<String>;
+  title: () => Promise<String>;
+  active: () => Promise<Boolean>;
 }
 
-export interface UserConnection {
+export interface GameSessionConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: GameSessionEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface GameSessionConnectionPromise
+  extends Promise<GameSessionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<GameSessionEdge>>() => T;
+  aggregate: <T = AggregateGameSessionPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface GameSessionConnectionSubscription
+  extends Promise<AsyncIterator<GameSessionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GameSessionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGameSessionSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -288,6 +505,121 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface GameSessionEdge {
+  node: GameSession;
+  cursor: String;
+}
+
+export interface GameSessionEdgePromise
+  extends Promise<GameSessionEdge>,
+    Fragmentable {
+  node: <T = GameSessionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GameSessionEdgeSubscription
+  extends Promise<AsyncIterator<GameSessionEdge>>,
+    Fragmentable {
+  node: <T = GameSessionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGameSession {
+  count: Int;
+}
+
+export interface AggregateGameSessionPromise
+  extends Promise<AggregateGameSession>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGameSessionSubscription
+  extends Promise<AsyncIterator<AggregateGameSession>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  name: String;
+  password: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  gameSessions: <T = FragmentableArray<GameSession>>(args?: {
+    where?: GameSessionWhereInput;
+    orderBy?: GameSessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  gameSessions: <T = Promise<AsyncIterator<GameSessionSubscription>>>(args?: {
+    where?: GameSessionWhereInput;
+    orderBy?: GameSessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  gameSessions: <T = FragmentableArray<GameSession>>(args?: {
+    where?: GameSessionWhereInput;
+    orderBy?: GameSessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -337,6 +669,53 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface GameSessionSubscriptionPayload {
+  mutation: MutationType;
+  node: GameSession;
+  updatedFields: String[];
+  previousValues: GameSessionPreviousValues;
+}
+
+export interface GameSessionSubscriptionPayloadPromise
+  extends Promise<GameSessionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = GameSessionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GameSessionPreviousValuesPromise>() => T;
+}
+
+export interface GameSessionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GameSessionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GameSessionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GameSessionPreviousValuesSubscription>() => T;
+}
+
+export interface GameSessionPreviousValues {
+  id: ID_Output;
+  title: String;
+  active: Boolean;
+}
+
+export interface GameSessionPreviousValuesPromise
+  extends Promise<GameSessionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  active: () => Promise<Boolean>;
+}
+
+export interface GameSessionPreviousValuesSubscription
+  extends Promise<AsyncIterator<GameSessionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -401,14 +780,14 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 export type Long = string;
 
@@ -419,6 +798,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "GameSession",
     embedded: false
   }
 ];

@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregateGameSession {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -11,9 +15,200 @@ type BatchPayload {
   count: Long!
 }
 
+type GameSession {
+  id: ID!
+  title: String!
+  active: Boolean!
+}
+
+type GameSessionConnection {
+  pageInfo: PageInfo!
+  edges: [GameSessionEdge]!
+  aggregate: AggregateGameSession!
+}
+
+input GameSessionCreateInput {
+  id: ID
+  title: String!
+  active: Boolean!
+}
+
+input GameSessionCreateManyInput {
+  create: [GameSessionCreateInput!]
+  connect: [GameSessionWhereUniqueInput!]
+}
+
+type GameSessionEdge {
+  node: GameSession!
+  cursor: String!
+}
+
+enum GameSessionOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  active_ASC
+  active_DESC
+}
+
+type GameSessionPreviousValues {
+  id: ID!
+  title: String!
+  active: Boolean!
+}
+
+input GameSessionScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  active: Boolean
+  active_not: Boolean
+  AND: [GameSessionScalarWhereInput!]
+  OR: [GameSessionScalarWhereInput!]
+  NOT: [GameSessionScalarWhereInput!]
+}
+
+type GameSessionSubscriptionPayload {
+  mutation: MutationType!
+  node: GameSession
+  updatedFields: [String!]
+  previousValues: GameSessionPreviousValues
+}
+
+input GameSessionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GameSessionWhereInput
+  AND: [GameSessionSubscriptionWhereInput!]
+  OR: [GameSessionSubscriptionWhereInput!]
+  NOT: [GameSessionSubscriptionWhereInput!]
+}
+
+input GameSessionUpdateDataInput {
+  title: String
+  active: Boolean
+}
+
+input GameSessionUpdateInput {
+  title: String
+  active: Boolean
+}
+
+input GameSessionUpdateManyDataInput {
+  title: String
+  active: Boolean
+}
+
+input GameSessionUpdateManyInput {
+  create: [GameSessionCreateInput!]
+  update: [GameSessionUpdateWithWhereUniqueNestedInput!]
+  upsert: [GameSessionUpsertWithWhereUniqueNestedInput!]
+  delete: [GameSessionWhereUniqueInput!]
+  connect: [GameSessionWhereUniqueInput!]
+  set: [GameSessionWhereUniqueInput!]
+  disconnect: [GameSessionWhereUniqueInput!]
+  deleteMany: [GameSessionScalarWhereInput!]
+  updateMany: [GameSessionUpdateManyWithWhereNestedInput!]
+}
+
+input GameSessionUpdateManyMutationInput {
+  title: String
+  active: Boolean
+}
+
+input GameSessionUpdateManyWithWhereNestedInput {
+  where: GameSessionScalarWhereInput!
+  data: GameSessionUpdateManyDataInput!
+}
+
+input GameSessionUpdateWithWhereUniqueNestedInput {
+  where: GameSessionWhereUniqueInput!
+  data: GameSessionUpdateDataInput!
+}
+
+input GameSessionUpsertWithWhereUniqueNestedInput {
+  where: GameSessionWhereUniqueInput!
+  update: GameSessionUpdateDataInput!
+  create: GameSessionCreateInput!
+}
+
+input GameSessionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  active: Boolean
+  active_not: Boolean
+  AND: [GameSessionWhereInput!]
+  OR: [GameSessionWhereInput!]
+  NOT: [GameSessionWhereInput!]
+}
+
+input GameSessionWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createGameSession(data: GameSessionCreateInput!): GameSession!
+  updateGameSession(data: GameSessionUpdateInput!, where: GameSessionWhereUniqueInput!): GameSession
+  updateManyGameSessions(data: GameSessionUpdateManyMutationInput!, where: GameSessionWhereInput): BatchPayload!
+  upsertGameSession(where: GameSessionWhereUniqueInput!, create: GameSessionCreateInput!, update: GameSessionUpdateInput!): GameSession!
+  deleteGameSession(where: GameSessionWhereUniqueInput!): GameSession
+  deleteManyGameSessions(where: GameSessionWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -40,6 +235,9 @@ type PageInfo {
 }
 
 type Query {
+  gameSession(where: GameSessionWhereUniqueInput!): GameSession
+  gameSessions(where: GameSessionWhereInput, orderBy: GameSessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GameSession]!
+  gameSessionsConnection(where: GameSessionWhereInput, orderBy: GameSessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GameSessionConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,6 +245,7 @@ type Query {
 }
 
 type Subscription {
+  gameSession(where: GameSessionSubscriptionWhereInput): GameSessionSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -55,6 +254,7 @@ type User {
   email: String!
   name: String!
   password: String!
+  gameSessions(where: GameSessionWhereInput, orderBy: GameSessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GameSession!]
 }
 
 type UserConnection {
@@ -68,6 +268,7 @@ input UserCreateInput {
   email: String!
   name: String!
   password: String!
+  gameSessions: GameSessionCreateManyInput
 }
 
 type UserEdge {
@@ -115,6 +316,7 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
+  gameSessions: GameSessionUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
@@ -180,6 +382,9 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  gameSessions_every: GameSessionWhereInput
+  gameSessions_some: GameSessionWhereInput
+  gameSessions_none: GameSessionWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
