@@ -21,6 +21,16 @@ const resolvers = {
     gameSessions: async (root, args, { prisma, req }, info) => { 
         return prisma.gameSessions();
     },
+    gameSession: async (root, args, { prisma, req }, info) => { 
+        return prisma.gameSession({
+          id: args.id,
+      });
+    },
+    user: async (root, args, { prisma, req }, info) => { 
+        return prisma.user({
+          id: args.id,
+      });
+    },
   },
   Mutation: {
     signupUser: async (root, args, { prisma }, info) => {

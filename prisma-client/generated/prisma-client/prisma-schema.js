@@ -19,6 +19,7 @@ type GameSession {
   id: ID!
   title: String!
   active: Boolean!
+  user: User
 }
 
 type GameSessionConnection {
@@ -31,11 +32,18 @@ input GameSessionCreateInput {
   id: ID
   title: String!
   active: Boolean!
+  user: UserCreateOneWithoutGameSessionsInput
 }
 
-input GameSessionCreateManyInput {
-  create: [GameSessionCreateInput!]
+input GameSessionCreateManyWithoutUserInput {
+  create: [GameSessionCreateWithoutUserInput!]
   connect: [GameSessionWhereUniqueInput!]
+}
+
+input GameSessionCreateWithoutUserInput {
+  id: ID
+  title: String!
+  active: Boolean!
 }
 
 type GameSessionEdge {
@@ -112,14 +120,10 @@ input GameSessionSubscriptionWhereInput {
   NOT: [GameSessionSubscriptionWhereInput!]
 }
 
-input GameSessionUpdateDataInput {
-  title: String
-  active: Boolean
-}
-
 input GameSessionUpdateInput {
   title: String
   active: Boolean
+  user: UserUpdateOneWithoutGameSessionsInput
 }
 
 input GameSessionUpdateManyDataInput {
@@ -127,21 +131,21 @@ input GameSessionUpdateManyDataInput {
   active: Boolean
 }
 
-input GameSessionUpdateManyInput {
-  create: [GameSessionCreateInput!]
-  update: [GameSessionUpdateWithWhereUniqueNestedInput!]
-  upsert: [GameSessionUpsertWithWhereUniqueNestedInput!]
+input GameSessionUpdateManyMutationInput {
+  title: String
+  active: Boolean
+}
+
+input GameSessionUpdateManyWithoutUserInput {
+  create: [GameSessionCreateWithoutUserInput!]
   delete: [GameSessionWhereUniqueInput!]
   connect: [GameSessionWhereUniqueInput!]
   set: [GameSessionWhereUniqueInput!]
   disconnect: [GameSessionWhereUniqueInput!]
+  update: [GameSessionUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [GameSessionUpsertWithWhereUniqueWithoutUserInput!]
   deleteMany: [GameSessionScalarWhereInput!]
   updateMany: [GameSessionUpdateManyWithWhereNestedInput!]
-}
-
-input GameSessionUpdateManyMutationInput {
-  title: String
-  active: Boolean
 }
 
 input GameSessionUpdateManyWithWhereNestedInput {
@@ -149,15 +153,20 @@ input GameSessionUpdateManyWithWhereNestedInput {
   data: GameSessionUpdateManyDataInput!
 }
 
-input GameSessionUpdateWithWhereUniqueNestedInput {
-  where: GameSessionWhereUniqueInput!
-  data: GameSessionUpdateDataInput!
+input GameSessionUpdateWithoutUserDataInput {
+  title: String
+  active: Boolean
 }
 
-input GameSessionUpsertWithWhereUniqueNestedInput {
+input GameSessionUpdateWithWhereUniqueWithoutUserInput {
   where: GameSessionWhereUniqueInput!
-  update: GameSessionUpdateDataInput!
-  create: GameSessionCreateInput!
+  data: GameSessionUpdateWithoutUserDataInput!
+}
+
+input GameSessionUpsertWithWhereUniqueWithoutUserInput {
+  where: GameSessionWhereUniqueInput!
+  update: GameSessionUpdateWithoutUserDataInput!
+  create: GameSessionCreateWithoutUserInput!
 }
 
 input GameSessionWhereInput {
@@ -191,6 +200,7 @@ input GameSessionWhereInput {
   title_not_ends_with: String
   active: Boolean
   active_not: Boolean
+  user: UserWhereInput
   AND: [GameSessionWhereInput!]
   OR: [GameSessionWhereInput!]
   NOT: [GameSessionWhereInput!]
@@ -268,7 +278,19 @@ input UserCreateInput {
   email: String!
   name: String!
   password: String!
-  gameSessions: GameSessionCreateManyInput
+  gameSessions: GameSessionCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutGameSessionsInput {
+  create: UserCreateWithoutGameSessionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutGameSessionsInput {
+  id: ID
+  email: String!
+  name: String!
+  password: String!
 }
 
 type UserEdge {
@@ -316,13 +338,33 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
-  gameSessions: GameSessionUpdateManyInput
+  gameSessions: GameSessionUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   email: String
   name: String
   password: String
+}
+
+input UserUpdateOneWithoutGameSessionsInput {
+  create: UserCreateWithoutGameSessionsInput
+  update: UserUpdateWithoutGameSessionsDataInput
+  upsert: UserUpsertWithoutGameSessionsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutGameSessionsDataInput {
+  email: String
+  name: String
+  password: String
+}
+
+input UserUpsertWithoutGameSessionsInput {
+  update: UserUpdateWithoutGameSessionsDataInput!
+  create: UserCreateWithoutGameSessionsInput!
 }
 
 input UserWhereInput {
