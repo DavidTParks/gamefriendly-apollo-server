@@ -26,13 +26,23 @@ const resolvers = {
         const decoded = decodedToken(req);
         return prisma.gameSession({
           id: args.id,
-      });
+      }, info);
     },
     user: async (root, args, { prisma, req }, info) => { 
         const decoded = decodedToken(req);
         return prisma.user({
           id: args.id,
       });
+    },
+  },
+  User: {
+    gameSessions: async (root, args, { prisma, req }, info) => { 
+      return prisma.user({ id: root.id }).gameSessions()
+    },
+  },
+  GameSession: {
+    user: async (root, args, { prisma, req }, info) => { 
+      return prisma.gameSession({ id: root.id }).user()
     },
   },
   Mutation: {
