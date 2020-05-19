@@ -4,7 +4,7 @@ const typeDefs = gql`
     name: String!
     email: String!
     password: String!
-    id: Int
+    id: ID!
   }
 type Mutation {
   signupUser(data: UserCreateInput!) : AuthPayLoad!

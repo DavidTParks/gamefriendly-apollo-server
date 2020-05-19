@@ -6,8 +6,9 @@ const resolvers = require('./resolver');
 const server = new ApolloServer({ 
   typeDefs, 
   resolvers,
-  context : () => ({
-    prisma
+  context : req => ({
+    prisma,
+    req
   })
  });
 server.listen().then(({ url }) => {

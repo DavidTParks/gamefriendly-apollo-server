@@ -1,19 +1,34 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { decodedToken } = require('./decodedToken');
+
+const passwordValidator = require('password-validator');
+const { isEmail } = require('validator');
+const passwordSchema = new passwordValidator()
+    .is().min(8)
+    .is().max(20)
+    .has().letters()
+    .has().digits()
+    .has().symbols()
+    .has().not().spaces();
 
 const resolvers = {
   Query: {
-    users: async (root, args, { prisma }, info) => { 
-      try {
+    users: async (root, args, { prisma, req }, info) => { 
+        const decoded = decodedToken(req);
         return prisma.users();
-      } catch (error) {
-        throw error;
-      }
     },
   },
   Mutation: {
     signupUser: async (root, args, { prisma }, info) => {
         const { data: { email, name, password } } = args;
+        if(!isEmail(email)) {
+          throw new Error('Invalid email');
+        }
+        if (!passwordSchema.validate(password)) {
+          throw new Error('Password is not strong enough!');
+        }
+        
         const newUser = await prisma.createUser({
           email,
           name,
