@@ -14,12 +14,15 @@ scalar Date
 
     type GameSession {
         id: ID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         title: String!
         user: User
         active: Boolean!
     }
 
     type Mutation {
+        createGameSession(data: GameSessionCreateInput!): GameSessionPayload!
         signupUser(data: UserCreateInput!) : AuthPayLoad!
         loginUser(data: UserLoginInput!): AuthPayLoad!
     }
@@ -31,12 +34,21 @@ scalar Date
         password: String!
     }
 
+    input GameSessionCreateInput {
+        active: Boolean!
+        title: String!
+    }
+
     input UserLoginInput {
         email: String!
         password: String!
     }
     type AuthPayLoad {
         token: String!
+    }
+
+    type GameSessionPayload {
+        data: GameSession!
     }
 
     type Query {

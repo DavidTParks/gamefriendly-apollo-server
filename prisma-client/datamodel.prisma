@@ -8,6 +8,8 @@ type User {
 
 type GameSession {
   id: ID! @id @unique
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   title: String!
   active: Boolean!
   user: User

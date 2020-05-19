@@ -19,14 +19,17 @@ const resolvers = {
         return prisma.users();
     },
     gameSessions: async (root, args, { prisma, req }, info) => { 
+        const decoded = decodedToken(req);
         return prisma.gameSessions();
     },
     gameSession: async (root, args, { prisma, req }, info) => { 
+        const decoded = decodedToken(req);
         return prisma.gameSession({
           id: args.id,
       });
     },
     user: async (root, args, { prisma, req }, info) => { 
+        const decoded = decodedToken(req);
         return prisma.user({
           id: args.id,
       });
@@ -49,7 +52,17 @@ const resolvers = {
         });
         return {token : jwt.sign(newUser, "supersecret")};
     },
-    loginUser: async (root, args, { prisma }, info)  => {
+    createGameSession: async (root, args, { prisma, req }, info) => {
+        const decoded = decodedToken(req);
+        const { data : {title, user, active}} = args;
+        const gameSession = await prisma.createGameSession({
+          title: title,
+          active: active,
+          user: { connect: { id: decoded.id } },
+        });
+        return {data : gameSession};
+    },
+    loginUser: async (root, args, { prisma, req }, info)  => {
       const { data: { email, password } } = args;
       const [ theUser ] = await prisma.users({
         where: {
@@ -60,7 +73,8 @@ const resolvers = {
       const isMatch = bcrypt.compareSync(password, theUser.password);
       if (!isMatch) throw new Error('Unable to Login');
       return {token : jwt.sign(theUser, "supersecret")};
-    }
+    },
+
   }
 };
 module.exports = resolvers;
