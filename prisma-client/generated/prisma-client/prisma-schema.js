@@ -22,8 +22,11 @@ type GameSession {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  game: Int!
+  description: String!
+  discord: String!
   active: Boolean!
-  user: User
+  user: User!
 }
 
 type GameSessionConnection {
@@ -35,8 +38,11 @@ type GameSessionConnection {
 input GameSessionCreateInput {
   id: ID
   title: String!
+  game: Int!
+  description: String!
+  discord: String!
   active: Boolean!
-  user: UserCreateOneWithoutGameSessionsInput
+  user: UserCreateOneWithoutGameSessionsInput!
 }
 
 input GameSessionCreateManyWithoutUserInput {
@@ -47,6 +53,9 @@ input GameSessionCreateManyWithoutUserInput {
 input GameSessionCreateWithoutUserInput {
   id: ID
   title: String!
+  game: Int!
+  description: String!
+  discord: String!
   active: Boolean!
 }
 
@@ -64,6 +73,12 @@ enum GameSessionOrderByInput {
   updatedAt_DESC
   title_ASC
   title_DESC
+  game_ASC
+  game_DESC
+  description_ASC
+  description_DESC
+  discord_ASC
+  discord_DESC
   active_ASC
   active_DESC
 }
@@ -73,6 +88,9 @@ type GameSessionPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  game: Int!
+  description: String!
+  discord: String!
   active: Boolean!
 }
 
@@ -121,6 +139,42 @@ input GameSessionScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  game: Int
+  game_not: Int
+  game_in: [Int!]
+  game_not_in: [Int!]
+  game_lt: Int
+  game_lte: Int
+  game_gt: Int
+  game_gte: Int
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  discord: String
+  discord_not: String
+  discord_in: [String!]
+  discord_not_in: [String!]
+  discord_lt: String
+  discord_lte: String
+  discord_gt: String
+  discord_gte: String
+  discord_contains: String
+  discord_not_contains: String
+  discord_starts_with: String
+  discord_not_starts_with: String
+  discord_ends_with: String
+  discord_not_ends_with: String
   active: Boolean
   active_not: Boolean
   AND: [GameSessionScalarWhereInput!]
@@ -148,17 +202,26 @@ input GameSessionSubscriptionWhereInput {
 
 input GameSessionUpdateInput {
   title: String
+  game: Int
+  description: String
+  discord: String
   active: Boolean
-  user: UserUpdateOneWithoutGameSessionsInput
+  user: UserUpdateOneRequiredWithoutGameSessionsInput
 }
 
 input GameSessionUpdateManyDataInput {
   title: String
+  game: Int
+  description: String
+  discord: String
   active: Boolean
 }
 
 input GameSessionUpdateManyMutationInput {
   title: String
+  game: Int
+  description: String
+  discord: String
   active: Boolean
 }
 
@@ -181,6 +244,9 @@ input GameSessionUpdateManyWithWhereNestedInput {
 
 input GameSessionUpdateWithoutUserDataInput {
   title: String
+  game: Int
+  description: String
+  discord: String
   active: Boolean
 }
 
@@ -240,6 +306,42 @@ input GameSessionWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  game: Int
+  game_not: Int
+  game_in: [Int!]
+  game_not_in: [Int!]
+  game_lt: Int
+  game_lte: Int
+  game_gt: Int
+  game_gte: Int
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  discord: String
+  discord_not: String
+  discord_in: [String!]
+  discord_not_in: [String!]
+  discord_lt: String
+  discord_lte: String
+  discord_gt: String
+  discord_gte: String
+  discord_contains: String
+  discord_not_contains: String
+  discord_starts_with: String
+  discord_not_starts_with: String
+  discord_ends_with: String
+  discord_not_ends_with: String
   active: Boolean
   active_not: Boolean
   user: UserWhereInput
@@ -303,6 +405,7 @@ type Subscription {
 
 type User {
   id: ID!
+  createdAt: DateTime!
   email: String!
   name: String!
   password: String!
@@ -343,6 +446,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
   email_ASC
   email_DESC
   name_ASC
@@ -353,6 +458,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  createdAt: DateTime!
   email: String!
   name: String!
   password: String!
@@ -389,12 +495,10 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneWithoutGameSessionsInput {
+input UserUpdateOneRequiredWithoutGameSessionsInput {
   create: UserCreateWithoutGameSessionsInput
   update: UserUpdateWithoutGameSessionsDataInput
   upsert: UserUpsertWithoutGameSessionsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
@@ -424,6 +528,14 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
   email: String
   email_not: String
   email_in: [String!]

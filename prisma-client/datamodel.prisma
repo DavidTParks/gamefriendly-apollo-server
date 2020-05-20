@@ -12,6 +12,9 @@ type GameSession {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   title: String!
+  game: Int!
+  description: String!
+  discord: String!
   active: Boolean!
-  user: User
+  user: User!
 }

@@ -153,12 +153,20 @@ export type GameSessionOrderByInput =
   | "updatedAt_DESC"
   | "title_ASC"
   | "title_DESC"
+  | "game_ASC"
+  | "game_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "discord_ASC"
+  | "discord_DESC"
   | "active_ASC"
   | "active_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
   | "email_ASC"
   | "email_DESC"
   | "name_ASC"
@@ -217,6 +225,42 @@ export interface GameSessionWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  game?: Maybe<Int>;
+  game_not?: Maybe<Int>;
+  game_in?: Maybe<Int[] | Int>;
+  game_not_in?: Maybe<Int[] | Int>;
+  game_lt?: Maybe<Int>;
+  game_lte?: Maybe<Int>;
+  game_gt?: Maybe<Int>;
+  game_gte?: Maybe<Int>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  discord?: Maybe<String>;
+  discord_not?: Maybe<String>;
+  discord_in?: Maybe<String[] | String>;
+  discord_not_in?: Maybe<String[] | String>;
+  discord_lt?: Maybe<String>;
+  discord_lte?: Maybe<String>;
+  discord_gt?: Maybe<String>;
+  discord_gte?: Maybe<String>;
+  discord_contains?: Maybe<String>;
+  discord_not_contains?: Maybe<String>;
+  discord_starts_with?: Maybe<String>;
+  discord_not_starts_with?: Maybe<String>;
+  discord_ends_with?: Maybe<String>;
+  discord_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   user?: Maybe<UserWhereInput>;
@@ -240,6 +284,14 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
   email?: Maybe<String>;
   email_not?: Maybe<String>;
   email_in?: Maybe<String[] | String>;
@@ -298,8 +350,11 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface GameSessionCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
+  game: Int;
+  description: String;
+  discord: String;
   active: Boolean;
-  user?: Maybe<UserCreateOneWithoutGameSessionsInput>;
+  user: UserCreateOneWithoutGameSessionsInput;
 }
 
 export interface UserCreateOneWithoutGameSessionsInput {
@@ -316,16 +371,17 @@ export interface UserCreateWithoutGameSessionsInput {
 
 export interface GameSessionUpdateInput {
   title?: Maybe<String>;
+  game?: Maybe<Int>;
+  description?: Maybe<String>;
+  discord?: Maybe<String>;
   active?: Maybe<Boolean>;
-  user?: Maybe<UserUpdateOneWithoutGameSessionsInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutGameSessionsInput>;
 }
 
-export interface UserUpdateOneWithoutGameSessionsInput {
+export interface UserUpdateOneRequiredWithoutGameSessionsInput {
   create?: Maybe<UserCreateWithoutGameSessionsInput>;
   update?: Maybe<UserUpdateWithoutGameSessionsDataInput>;
   upsert?: Maybe<UserUpsertWithoutGameSessionsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -342,6 +398,9 @@ export interface UserUpsertWithoutGameSessionsInput {
 
 export interface GameSessionUpdateManyMutationInput {
   title?: Maybe<String>;
+  game?: Maybe<Int>;
+  description?: Maybe<String>;
+  discord?: Maybe<String>;
   active?: Maybe<Boolean>;
 }
 
@@ -363,6 +422,9 @@ export interface GameSessionCreateManyWithoutUserInput {
 export interface GameSessionCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   title: String;
+  game: Int;
+  description: String;
+  discord: String;
   active: Boolean;
 }
 
@@ -407,6 +469,9 @@ export interface GameSessionUpdateWithWhereUniqueWithoutUserInput {
 
 export interface GameSessionUpdateWithoutUserDataInput {
   title?: Maybe<String>;
+  game?: Maybe<Int>;
+  description?: Maybe<String>;
+  discord?: Maybe<String>;
   active?: Maybe<Boolean>;
 }
 
@@ -461,6 +526,42 @@ export interface GameSessionScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  game?: Maybe<Int>;
+  game_not?: Maybe<Int>;
+  game_in?: Maybe<Int[] | Int>;
+  game_not_in?: Maybe<Int[] | Int>;
+  game_lt?: Maybe<Int>;
+  game_lte?: Maybe<Int>;
+  game_gt?: Maybe<Int>;
+  game_gte?: Maybe<Int>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  discord?: Maybe<String>;
+  discord_not?: Maybe<String>;
+  discord_in?: Maybe<String[] | String>;
+  discord_not_in?: Maybe<String[] | String>;
+  discord_lt?: Maybe<String>;
+  discord_lte?: Maybe<String>;
+  discord_gt?: Maybe<String>;
+  discord_gte?: Maybe<String>;
+  discord_contains?: Maybe<String>;
+  discord_not_contains?: Maybe<String>;
+  discord_starts_with?: Maybe<String>;
+  discord_not_starts_with?: Maybe<String>;
+  discord_ends_with?: Maybe<String>;
+  discord_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   AND?: Maybe<GameSessionScalarWhereInput[] | GameSessionScalarWhereInput>;
@@ -475,6 +576,9 @@ export interface GameSessionUpdateManyWithWhereNestedInput {
 
 export interface GameSessionUpdateManyDataInput {
   title?: Maybe<String>;
+  game?: Maybe<Int>;
+  description?: Maybe<String>;
+  discord?: Maybe<String>;
   active?: Maybe<Boolean>;
 }
 
@@ -521,6 +625,9 @@ export interface GameSession {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  game: Int;
+  description: String;
+  discord: String;
   active: Boolean;
 }
 
@@ -529,6 +636,9 @@ export interface GameSessionPromise extends Promise<GameSession>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  game: () => Promise<Int>;
+  description: () => Promise<String>;
+  discord: () => Promise<String>;
   active: () => Promise<Boolean>;
   user: <T = UserPromise>() => T;
 }
@@ -540,6 +650,9 @@ export interface GameSessionSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  game: () => Promise<AsyncIterator<Int>>;
+  description: () => Promise<AsyncIterator<String>>;
+  discord: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
   user: <T = UserSubscription>() => T;
 }
@@ -551,12 +664,16 @@ export interface GameSessionNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  game: () => Promise<Int>;
+  description: () => Promise<String>;
+  discord: () => Promise<String>;
   active: () => Promise<Boolean>;
   user: <T = UserPromise>() => T;
 }
 
 export interface User {
   id: ID_Output;
+  createdAt: DateTimeOutput;
   email: String;
   name: String;
   password: String;
@@ -564,6 +681,7 @@ export interface User {
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
@@ -582,6 +700,7 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
@@ -600,6 +719,7 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
@@ -793,6 +913,9 @@ export interface GameSessionPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  game: Int;
+  description: String;
+  discord: String;
   active: Boolean;
 }
 
@@ -803,6 +926,9 @@ export interface GameSessionPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  game: () => Promise<Int>;
+  description: () => Promise<String>;
+  discord: () => Promise<String>;
   active: () => Promise<Boolean>;
 }
 
@@ -813,6 +939,9 @@ export interface GameSessionPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  game: () => Promise<AsyncIterator<Int>>;
+  description: () => Promise<AsyncIterator<String>>;
+  discord: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
 }
 
@@ -843,6 +972,7 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
+  createdAt: DateTimeOutput;
   email: String;
   name: String;
   password: String;
@@ -852,6 +982,7 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
@@ -861,6 +992,7 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
@@ -888,14 +1020,14 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 
