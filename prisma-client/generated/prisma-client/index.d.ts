@@ -169,6 +169,8 @@ export type UserOrderByInput =
   | "createdAt_DESC"
   | "email_ASC"
   | "email_DESC"
+  | "username_ASC"
+  | "username_DESC"
   | "name_ASC"
   | "name_DESC"
   | "password_ASC"
@@ -306,6 +308,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  username?: Maybe<String>;
+  username_not?: Maybe<String>;
+  username_in?: Maybe<String[] | String>;
+  username_not_in?: Maybe<String[] | String>;
+  username_lt?: Maybe<String>;
+  username_lte?: Maybe<String>;
+  username_gt?: Maybe<String>;
+  username_gte?: Maybe<String>;
+  username_contains?: Maybe<String>;
+  username_not_contains?: Maybe<String>;
+  username_starts_with?: Maybe<String>;
+  username_not_starts_with?: Maybe<String>;
+  username_ends_with?: Maybe<String>;
+  username_not_ends_with?: Maybe<String>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -345,6 +361,7 @@ export interface UserWhereInput {
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   email?: Maybe<String>;
+  username?: Maybe<String>;
 }>;
 
 export interface GameSessionCreateInput {
@@ -365,6 +382,7 @@ export interface UserCreateOneWithoutGameSessionsInput {
 export interface UserCreateWithoutGameSessionsInput {
   id?: Maybe<ID_Input>;
   email: String;
+  username?: Maybe<String>;
   name: String;
   password: String;
 }
@@ -387,6 +405,7 @@ export interface UserUpdateOneRequiredWithoutGameSessionsInput {
 
 export interface UserUpdateWithoutGameSessionsDataInput {
   email?: Maybe<String>;
+  username?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
 }
@@ -407,6 +426,7 @@ export interface GameSessionUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   email: String;
+  username?: Maybe<String>;
   name: String;
   password: String;
   gameSessions?: Maybe<GameSessionCreateManyWithoutUserInput>;
@@ -430,6 +450,7 @@ export interface GameSessionCreateWithoutUserInput {
 
 export interface UserUpdateInput {
   email?: Maybe<String>;
+  username?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
   gameSessions?: Maybe<GameSessionUpdateManyWithoutUserInput>;
@@ -584,6 +605,7 @@ export interface GameSessionUpdateManyDataInput {
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
+  username?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
 }
@@ -675,6 +697,7 @@ export interface User {
   id: ID_Output;
   createdAt: DateTimeOutput;
   email: String;
+  username?: String;
   name: String;
   password: String;
 }
@@ -683,6 +706,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  username: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
   gameSessions: <T = FragmentableArray<GameSession>>(args?: {
@@ -702,6 +726,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   gameSessions: <T = Promise<AsyncIterator<GameSessionSubscription>>>(args?: {
@@ -721,6 +746,7 @@ export interface UserNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  username: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
   gameSessions: <T = FragmentableArray<GameSession>>(args?: {
@@ -974,6 +1000,7 @@ export interface UserPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   email: String;
+  username?: String;
   name: String;
   password: String;
 }
@@ -984,6 +1011,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  username: () => Promise<String>;
   name: () => Promise<String>;
   password: () => Promise<String>;
 }
@@ -994,6 +1022,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
 }

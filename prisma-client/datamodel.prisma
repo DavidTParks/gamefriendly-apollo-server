@@ -2,6 +2,7 @@ type User {
   id: ID! @id @unique
   createdAt: DateTime! @createdAt
   email: String! @unique
+  username: String @unique
   name: String!
   password: String!
   gameSessions: [GameSession!]!
